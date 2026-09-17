@@ -1,0 +1,9 @@
+services:
+  ctf-ec-shop:
+    image: web-ctf:latest
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    # DBはコンテナ内で毎回初期化する想定のため、永続ボリュームは持たせない
+    restart: "no"

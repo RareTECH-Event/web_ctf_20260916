@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{% if query %}「{{ query }}」の検索結果{% elif category %}{{ category }} - 商品一覧{% else %}商品一覧{% endif %} - Web CTF{% endblock %}
+{% block content %}
+{% if not query and not category %}
+<section class="hero-banner">
+  <h1>🛒 商品一覧ページを見てみよう</h1>
+  <p>
+    このページはリリース直前まで機能追加が続いていたようです。<br>
+    エンジニアがデバッグ用のコードを消し忘れているかもしれません。<br>
+    開発者ツール（F12）を開いて、読み込まれているJavaScriptファイルを確認してみましょう。
+  </p>
+</section>
+{% endif %}
+<h1>{% if query %}「{{ query }}」の検索結果{% elif category %}{{ category }}{% else %}商品一覧{% endif %}</h1>
+<div class="product-grid">
+  {% for product in products %}
+  <div class="card product-card">
+    <div class="product-card__thumb" aria-hidden="true"><span class="material-symbols-outlined">package_2</span></div>
+    <h2><a href="{{ url_for('products.product_detail', product_id=product['id']) }}">{{ product['name'] }}</a></h2>
+    <p class="price"><span class="yen">&yen;</span>{{ "{:,}".format(product['price']) }}</p>
+    <p>{{ product['description'] }}</p>
+    <form method="post" action="{{ url_for('cart.add_to_cart', product_id=product['id']) }}">
+      <button class="buy-button" type="submit"><span class="material-symbols-outlined icon-inline" aria-hidden="true">add_shopping_cart</span> カートに入れる</button>
+    </form>
+  </div>
+  {% else %}
+  <p>該当する商品が見つかりませんでした。</p>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}

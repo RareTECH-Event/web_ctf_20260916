@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}ログイン成功 - Web CTF{% endblock %}
+{% block content %}
+<section class="hero-banner">
+  <h1>✅ ログイン成功</h1>
+  <p>ようこそ、admin さん</p>
+</section>
+<div class="card">
+  <p>システムは今、あなたを「なりすまし」だと気づいていないようです。</p>
+  <p>{{ flag_05 }}</p>
+  <p><a href="{{ url_for('mypage.mypage') }}">マイページへ進む &raquo;</a></p>
+</div>
+{% endblock %}

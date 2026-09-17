@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Web CTF - 毎日の「欲しい」がすぐ届く{% endblock %}
+{% block head_extra %}
+<!-- {{ flag_01 }} -->
+{% endblock %}
+{% block content %}
+<section class="hero-banner">
+  <h1>🎉 Web CTF チャレンジへようこそ！</h1>
+  <p>
+    これから全10問、初級から上級まで様々なWebアプリケーションの脆弱性に挑戦してもらいます。<br>
+    このページ自体にも、実は「あるもの」が隠れています。ブラウザの機能を使って探してみましょう。<br>
+    ヒント: 右クリック &rarr; 「ページのソースを表示」
+  </p>
+</section>
+
+<section>
+  <h2>おすすめ商品</h2>
+  <p><a href="{{ url_for('products.list_products') }}">商品一覧を見る &raquo;</a></p>
+</section>
+{% endblock %}

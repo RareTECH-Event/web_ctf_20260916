@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}マイページ - Web CTF{% endblock %}
+{% block content %}
+<h1>マイページ</h1>
+<section class="card">
+  <p>ようこそ、{{ user['username'] }}さん</p>
+  <p>現在の権限: 一般ユーザー</p>
+  <p>お届け先住所: {{ user['address'] }}</p>
+  <p><a href="{{ url_for('orders.order_list') }}">注文履歴を見る</a></p>
+  <form method="post" action="{{ url_for('auth.logout') }}">
+    <button class="buy-button" type="submit" style="width:auto;">ログアウト</button>
+  </form>
+</section>
+{% endblock %}

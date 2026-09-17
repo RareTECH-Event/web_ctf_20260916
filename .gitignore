@@ -1,0 +1,15 @@
+.env
+example.env
+__pycache__/
+*.pyc
+.DS_Store
+*.db
+secret/flag07.txt
+app/data.db
+
+# 受講生に見せてはいけない資料（攻略手順・フラグ・問題仕様を含む）
+CLAUDE.md
+challenges.md
+todo.md
+docs/challenges.md
+docs/student-challenge-pages.md

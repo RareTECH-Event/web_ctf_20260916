@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}ログイン - Web CTF{% endblock %}
+{% block content %}
+<h1>🔐 会員専用ページ</h1>
+<form method="post" action="{{ url_for('auth.login') }}" class="card">
+  <label>ユーザー名 <input type="text" name="username" required></label><br>
+  <label>パスワード <input type="password" name="password" required></label><br>
+  <button class="buy-button" type="submit" style="width:auto;">ログイン</button>
+</form>
+<p>※パスワードを忘れた方は管理者にお問い合わせください</p>
+{% endblock %}

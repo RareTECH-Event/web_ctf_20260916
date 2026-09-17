@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ product['name'] }} - Web CTF{% endblock %}
+{% block content %}
+<p><a href="{{ url_for('products.list_products') }}">&laquo; 商品一覧に戻る</a></p>
+
+<div class="product-detail">
+  <div>
+    <div class="product-detail__image" aria-hidden="true"><span class="material-symbols-outlined">package_2</span></div>
+    <h1 class="product-detail__title">{{ product['name'] }}</h1>
+    {% if review_count %}
+    <p class="stars">
+      {{ "★" * (avg_rating | round | int) }}{{ "☆" * (5 - (avg_rating | round | int)) }}
+      <span class="count">{{ "%.1f"|format(avg_rating) }}（{{ review_count }}件のレビュー）</span>
+    </p>
+    {% else %}
+    <p class="stars"><span class="count">まだレビューがありません</span></p>
+    {% endif %}
+    <p>{{ product['description'] }}</p>
+  </div>
+
+  <div class="buy-box">
+    <p class="price"><span class="yen">&yen;</span>{{ "{:,}".format(product['price']) }}</p>
+    {% if product['stock'] > 0 %}
+    <p class="buy-box__stock">在庫あり（残り{{ product['stock'] }}点）</p>
+    {% else %}
+    <p class="buy-box__stock" style="color:#b12704;">在庫切れ</p>
+    {% endif %}
+    <form method="post" action="{{ url_for('cart.add_to_cart', product_id=product['id']) }}">
+      <button class="buy-button" type="submit"><span class="material-symbols-outlined icon-inline" aria-hidden="true">add_shopping_cart</span> カートに入れる</button>
+    </form>
+  </div>
+</div>
+
+<section>
+  <h2>レビュー</h2>
+  {% for review in reviews %}
+  <div class="review">
+    <p class="review__author">{{ review['author_name'] }}</p>
+    <p class="stars">{{ "★" * review['rating'] }}{{ "☆" * (5 - review['rating']) }}</p>
+    <p>{{ review['comment'] }}</p>
+  </div>
+  {% else %}
+  <p>まだレビューはありません。</p>
+  {% endfor %}
+
+  <h3>✍️ レビューを投稿する</h3>
+  <form class="review-form" method="post" action="{{ url_for('reviews.add_review', product_id=product['id']) }}">
+    <label>お名前
+      <input type="text" name="author_name" required>
+    </label>
+    <label>評価
+      <select name="rating">
+        <option value="5">5</option>
+        <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="2">2</option>
+        <option value="1">1</option>
+      </select>
+    </label>
+    <label>コメント
+      <textarea name="comment" rows="3"></textarea>
+    </label>
+    <button class="buy-button" type="submit" style="width:auto;">投稿する</button>
+  </form>
+</section>
+{% endblock %}
