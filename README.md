@@ -70,18 +70,16 @@ docker compose down
 docker build -t web-ctf:latest .
 ```
 
-### 2. イメージをtarに書き出す
-
-```
-mkdir -p dist
-docker save web-ctf:latest -o dist/web-ctf.tar
-```
-
-### 3. 配布用フォルダにまとめる
+### 2. 配布用フォルダを作り、イメージをtarに書き出す
 
 ```
 mkdir -p dist/student-package
-cp dist/web-ctf.tar dist/student-package/web-ctf.tar
+docker save web-ctf:latest -o dist/student-package/web-ctf.tar
+```
+
+### 3. compose設定と`.env`を配布用フォルダにまとめる
+
+```
 cp docker-compose.dist.yml dist/student-package/docker-compose.yml
 cp .env dist/student-package/.env
 ```
