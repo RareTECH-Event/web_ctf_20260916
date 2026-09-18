@@ -1,5 +1,4 @@
 .env
-example.env
 __pycache__/
 *.pyc
 .DS_Store
@@ -7,9 +6,9 @@ __pycache__/
 secret/flag07.txt
 app/data.db
 
-# 受講生に見せてはいけない資料（攻略手順・フラグ・問題仕様を含む）
+# 受講生に見せてはいけない資料（このリポジトリは講師専用、受講生には配布しない）
 CLAUDE.md
-challenges.md
 todo.md
-docs/challenges.md
-docs/student-challenge-pages.md
+
+# 配布用ビルド成果物（サイズが大きい上、gitで管理する必要がない）
+dist/

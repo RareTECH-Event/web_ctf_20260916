@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body { font-family: sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+    h1 { font-size: 20px; }
+    h2 { font-size: 16px; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 20px; }
+    label { display: block; margin-top: 16px; font-weight: bold; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; font-size: 16px; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #result { margin-top: 20px; padding: 12px; border-radius: 6px; display: none; font-weight: bold; }
+    .correct { background: #d4edda; color: #155724; }
+    .incorrect { background: #f8d7da; color: #721c24; }
+    .error { background: #f8d7da; color: #721c24; }
+    #progressList { margin-top: 16px; list-style: none; padding: 0; }
+    #progressList li { padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+    .solved { color: #155724; font-weight: bold; }
+    .unsolved { color: #999; }
+  </style>
+</head>
+<body>
+  <h1>CTF フラグ提出</h1>
+
+  <label for="name">お名前</label>
+  <input type="text" id="name" placeholder="例: 山田太郎">
+
+  <label for="question">問題</label>
+  <select id="question"></select>
+
+  <label for="flag">フラグ</label>
+  <input type="text" id="flag" placeholder="FLAG{...}">
+
+  <button onclick="submitFlag()">提出</button>
+
+  <div id="result"></div>
+
+  <h2>自分の進捗を確認</h2>
+  <button onclick="checkProgress()">進捗を確認</button>
+  <ul id="progressList"></ul>
+
+  <script>
+    // ブラウザに保存された名前を復元（scriptはbody末尾にあるため要素は既に存在する）
+    const savedName = localStorage.getItem('ctf_name');
+    if (savedName) {
+      document.getElementById('name').value = savedName;
+    }
+
+    // 入力するたびにブラウザへ保存
+    document.getElementById('name').addEventListener('input', function() {
+      localStorage.setItem('ctf_name', this.value.trim());
+    });
+
+    google.script.run.withSuccessHandler(populateQuestions).getQuestions();
+
+    function populateQuestions(questions) {
+      const select = document.getElementById('question');
+      questions.forEach(function(q) {
+        const opt = document.createElement('option');
+        opt.value = q.id;
+        opt.textContent = q.title;
+        select.appendChild(opt);
+      });
+    }
+
+    function submitFlag() {
+      const name = document.getElementById('name').value.trim();
+      const questionId = document.getElementById('question').value;
+      const flag = document.getElementById('flag').value;
+      const resultDiv = document.getElementById('result');
+
+      if (!name || !flag) {
+        alert('お名前とフラグを入力してください');
+        return;
+      }
+
+      resultDiv.style.display = 'none';
+
+      google.script.run
+        .withSuccessHandler(function(res) {
+          resultDiv.style.display = 'block';
+          resultDiv.className = res.status;
+          resultDiv.textContent = res.message;
+          if (res.status === 'correct') {
+            document.getElementById('flag').value = '';
+          }
+        })
+        .withFailureHandler(function(err) {
+          resultDiv.style.display = 'block';
+          resultDiv.className = 'incorrect';
+          resultDiv.textContent = 'エラーが発生しました: ' + err.message;
+        })
+        .checkFlag(name, questionId, flag);
+    }
+
+    function checkProgress() {
+      const name = document.getElementById('name').value.trim();
+      if (!name) {
+        alert('お名前を入力してください');
+        return;
+      }
+      google.script.run
+        .withSuccessHandler(renderProgress)
+        .withFailureHandler(function(err) {
+          alert('エラーが発生しました: ' + err.message);
+        })
+        .getProgress(name);
+    }
+
+    function renderProgress(progress) {
+      const list = document.getElementById('progressList');
+      list.innerHTML = '';
+      progress.forEach(function(p) {
+        const li = document.createElement('li');
+        const label = document.createElement('span');
+        label.textContent = p.title;
+        const status = document.createElement('span');
+        status.textContent = p.solved ? '✅ 正解済み' : '未正解';
+        status.className = p.solved ? 'solved' : 'unsolved';
+        li.appendChild(label);
+        li.appendChild(status);
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
