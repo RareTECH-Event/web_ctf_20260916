@@ -16,7 +16,7 @@ def seed():
     # ORDER BYなしのSELECTが最初に返す行(=このadmin行)としてログインが成立するようにする。
     conn.execute(
         "INSERT INTO users (username, password, address) VALUES (?, ?, ?)",
-        ("admin", secrets.token_hex(16), "本社所在地（非公開）"),
+        ("admin", secrets.token_hex(16), flags.FLAG_05 or "FLAG_05_NOT_SET"),
     )
     conn.execute(
         "INSERT INTO users (username, password, address) VALUES (?, ?, ?)",

@@ -1,13 +1,10 @@
 {% extends "base.html" %}
 {% block title %}領収書ダウンロード - Web CTF{% endblock %}
 {% block content %}
-<section class="hero-banner">
-  <h1>📁 領収書ダウンロード</h1>
-  <p>過去の注文の領収書をダウンロードできます。</p>
-</section>
+<h1>領収書ダウンロード</h1>
 <form method="get" action="{{ url_for('receipts.download_page') }}" class="card">
-  <label>ファイル名を指定してダウンロード
-    <input type="text" name="filename" value="{{ default_filename or '' }}" placeholder="例: receipt_1042.pdf">
+  <label>ファイル名
+    <input type="text" name="filename" value="{{ default_filename or '' }}">
   </label>
   <button class="buy-button" type="submit" style="width:auto; margin-top:10px;">ダウンロード</button>
 </form>

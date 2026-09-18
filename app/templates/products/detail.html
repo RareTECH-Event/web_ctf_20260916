@@ -43,7 +43,7 @@
   <p>まだレビューはありません。</p>
   {% endfor %}
 
-  <h3>✍️ レビューを投稿する</h3>
+  <h3>レビューを投稿する</h3>
   <form class="review-form" method="post" action="{{ url_for('reviews.add_review', product_id=product['id']) }}">
     <label>お名前
       <input type="text" name="author_name" required>

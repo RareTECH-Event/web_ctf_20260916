@@ -1,6 +1,5 @@
-from flask import Blueprint, flash, make_response, redirect, render_template, request, session, url_for
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 
-import flags
 from app.models import get_db
 
 bp = Blueprint("auth", __name__)
@@ -23,16 +22,13 @@ def login():
     conn.close()
 
     if user is None:
-        flash("❌ ユーザー名またはパスワードが間違っています")
+        flash("ユーザー名またはパスワードが違います。")
         return redirect(url_for("auth.login"))
 
     session["user_id"] = user["id"]
     role = "admin" if user["username"] == "admin" else "user"
 
-    if user["username"] == "admin":
-        response = make_response(render_template("login_success_admin.html", flag_05=flags.FLAG_05))
-    else:
-        response = redirect(url_for("mypage.mypage"))
+    response = redirect(url_for("mypage.mypage"))
     response.set_cookie("role", role)
     return response
 

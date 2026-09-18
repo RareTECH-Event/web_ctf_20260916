@@ -21,17 +21,9 @@
     </tbody>
   </table>
   <p>合計金額: &yen;{{ "{:,}".format(order['total']) }}</p>
+  {% if order['notes'] %}
+  <p>備考: {{ order['notes'] }}</p>
+  {% endif %}
   <p><a href="{{ url_for('receipts.download_page', order_id=order['id']) }}">領収書をダウンロード</a></p>
 </div>
-{% if order['notes'] %}
-<div class="card">
-  <p>顧客名: System Administrator</p>
-  <p>
-    配送先住所・備考欄:<br>
-    このページは本来、他人からは見えないはずでした。<br><br>
-    URLの数字を変えるだけで、簡単に他人の部屋を覗けてしまいましたね。
-  </p>
-  <p>{{ order['notes'] }}</p>
-</div>
-{% endif %}
 {% endblock %}

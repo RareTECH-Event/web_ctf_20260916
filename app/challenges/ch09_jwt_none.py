@@ -70,11 +70,5 @@ def api_purchases():
 def api_admin_dashboard():
     payload = _auth_payload()
     if payload is None or payload.get("role") != "admin":
-        return jsonify({"error": "⛔ トークンが無効です"}), 403
-    return jsonify(
-        {
-            "title": "🎛️ 管理者ダッシュボード",
-            "message": "トークンの署名を検証せずに中身だけを信じてしまうと、こうなります。",
-            "flag": flags.FLAG_09,
-        }
-    )
+        return jsonify({"error": "forbidden"}), 403
+    return jsonify({"message": "management dashboard", "flag": flags.FLAG_09})

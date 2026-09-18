@@ -188,7 +188,7 @@ curlでも試せます。
 curl -i -c cookies.txt --data-urlencode "username=' OR '1'='1' -- " -d "password=x" <http://localhost:8000/login>
 ```
 
-ログインに成功すると、専用の画面にフラグが表示されます。
+ログインに成功するとマイページに移動します。「お届け先住所」欄にフラグが表示されます。
 
 ### この問題のもとになる脆弱性について
 

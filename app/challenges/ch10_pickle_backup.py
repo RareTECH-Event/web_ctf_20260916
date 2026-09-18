@@ -29,7 +29,7 @@ def restore_cart():
         # __reduce__ を実装したオブジェクトを送ると、復元時に任意の呼び出しが実行される。
         restored = pickle.loads(base64.b64decode(data))
     except Exception as exc:
-        flash(f"⚠️ 復元処理でエラーが発生しました\n\n{exc}")
+        flash(f"復元に失敗しました: {exc}")
         return redirect(url_for("cart.view_cart"))
 
     # 例: os.system('cat /app/secret/flag10.txt > /tmp/output') のようなペイロードの
@@ -41,11 +41,7 @@ def restore_cart():
         os.remove(RCE_OUTPUT_PATH)
 
     if captured:
-        flash(
-            "⚠️ 復元処理でエラーが発生しました\n\n"
-            "...しかしその過程で、サーバー上のファイルが実行・読み取りされてしまったようです。\n\n"
-            f"{captured}"
-        )
+        flash(f"復元結果: {captured}")
     elif isinstance(restored, dict):
         session["cart"] = restored
         flash("カートを復元しました。")

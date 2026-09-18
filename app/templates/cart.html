@@ -18,13 +18,12 @@
 {% endif %}
 
 <section class="card">
-  <h2>⚙️ カートのバックアップ</h2>
-  <p>現在のカート内容をバックアップとして保存し、後で復元することができます。</p>
+  <h2>カートのバックアップ</h2>
+  <p>現在のカート内容をバックアップとして保存し、後で復元できます。</p>
   <p><a href="{{ url_for('cart_backup.backup_cart') }}">バックアップを保存する</a></p>
   <form method="post" action="{{ url_for('cart_backup.restore_cart') }}">
     <label>復元用データ<br><textarea name="backup_data" rows="4" cols="60"></textarea></label><br>
     <button class="buy-button" type="submit" style="width:auto;">復元する</button>
   </form>
-  <p><small>※上級者向け: 保存データの形式はBase64エンコードされたバイナリです</small></p>
 </section>
 {% endblock %}

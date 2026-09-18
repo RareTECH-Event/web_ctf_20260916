@@ -1,16 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{% if query %}「{{ query }}」の検索結果{% elif category %}{{ category }} - 商品一覧{% else %}商品一覧{% endif %} - Web CTF{% endblock %}
 {% block content %}
-{% if not query and not category %}
-<section class="hero-banner">
-  <h1>🛒 商品一覧ページを見てみよう</h1>
-  <p>
-    このページはリリース直前まで機能追加が続いていたようです。<br>
-    エンジニアがデバッグ用のコードを消し忘れているかもしれません。<br>
-    開発者ツール（F12）を開いて、読み込まれているJavaScriptファイルを確認してみましょう。
-  </p>
-</section>
-{% endif %}
 <h1>{% if query %}「{{ query }}」の検索結果{% elif category %}{{ category }}{% else %}商品一覧{% endif %}</h1>
 <div class="product-grid">
   {% for product in products %}

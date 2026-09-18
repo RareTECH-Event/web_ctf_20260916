@@ -60,6 +60,45 @@ docker compose down
 **アプリはステートレスに作られており、再起動すると全データ（ログイン状態・カート・DBの内容など）が初期状態にリセットされます。** 問題を進める中で状態がおかしくなった場合は、`docker compose down` → `docker compose up` で最初からやり直せます。
 
 
+## 配布パッケージの作り方（講師用）
+
+受講生に渡すのは、このリポジトリではなく「ビルド済みのDockerイメージ」「`docker-compose.yml`」「`.env`」の3点だけです。このリポジトリ自体（ソースコード・`docs/`・`challenges.md`など）は受講生に渡さないでください。
+
+### 1. イメージをビルドする
+
+```
+docker build -t web-ctf:latest .
+```
+
+### 2. イメージをtarに書き出す
+
+```
+mkdir -p dist
+docker save web-ctf:latest -o dist/web-ctf.tar
+```
+
+### 3. 配布用フォルダにまとめる
+
+```
+mkdir -p dist/student-package
+cp dist/web-ctf.tar dist/student-package/web-ctf.tar
+cp docker-compose.dist.yml dist/student-package/docker-compose.yml
+cp .env dist/student-package/.env
+```
+
+`.env` は実際のフラグ入りのファイルなので、コピーし忘れないよう最後に必ず確認してください。
+
+### 4. `dist/student-package/` を配布する
+
+このフォルダをzipにするか、共有ドライブなどアクセスを絞った場所に置いて渡してください。`dist/` は `.gitignore` 対象なので、gitを使わない経路（zip、共有ドライブなど）で配布する必要があります。
+
+**注意**
+
+- アプリのコードを変更したら、1〜3の手順をもう一度やり直してください。イメージが古いままだと変更が反映されません
+- `docker-compose.dist.yml` は必ず `docker-compose.yml` にリネームしてから配布してください（この名前でないと `docker compose up` が自動で見つけられません）
+
+---
+
 ## 困ったときは
 
 - ポート `8000` が他のアプリで使われている場合は起動に失敗します。他のアプリを終了してみましょう。
